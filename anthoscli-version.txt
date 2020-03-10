@@ -1,0 +1,4 @@
+{
+  "current": "anthoscli-alpha-rc1",
+  "next": "anthoscli-alpha-rc2"
+}
