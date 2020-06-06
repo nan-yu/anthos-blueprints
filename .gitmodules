@@ -1,3 +1,7 @@
 [submodule "anthos-service-mesh-packages"]
 	path = anthos-service-mesh-packages
 	url = git@github.com:nan-yu/anthos-service-mesh-packages.git
+[submodule "anthos-service-mesh-packages-release-1.5-asm"]
+	path = anthos-service-mesh-packages-release-1.5-asm
+	url = git@github.com:nan-yu/anthos-service-mesh-packages.git
+	branch = release-1.5-asm

@@ -1,3 +1,17 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 import datetime
 import os
 
@@ -13,13 +27,14 @@ def download_kpt(version, gcloud=None, statedir=None):
         e2e.workspace_dir(), "kpt-scratch-" + now.strftime("%Y%m%d%H%M%s")
     )
 
+    # We build up symlinks to the downloaded binaries in the bin directory
     bin_dir = os.path.join(scratch_dir, "bin")
     os.makedirs(bin_dir, exist_ok=True)
 
-    url = "gs://kpt-dev/releases/v" + version + "/linux_amd64/kpt_linux_amd64-v"\
-          + version + ".tar.gz"
+    url = "gs://kpt-dev/releases/v{version}/linux_amd64/kpt_linux_amd64-v{version}.tar.gz".format(version=version)
+
     tarfile = os.path.join(scratch_dir, "kpt.tar.gz")
-    gcloud.download_from_gcs(url, tarfile)  # TODO: caching?
+    gcloud.download_from_gcs(url, tarfile)
     expanded = downloads.expand_tar(tarfile)
     kpt_path = os.path.join(bin_dir, "kpt")
     os.symlink(os.path.join(expanded, "kpt"), kpt_path)
@@ -45,6 +60,11 @@ class Kpt(object):
         if self.statedir:
             s = s + " statedir=" + self.statedir
         return s
+
+    # add_to_path ensures that kubectl is on the provider environ
+    def add_to_path(self, env):
+        d = os.path.dirname(self.bin)
+        env["PATH"] = d + ":" + env["PATH"]
 
     def get(self, src, dest):
         stdout = self.exec(["pkg", "get", src, dest])

@@ -1,3 +1,17 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 import datetime
 import downloads
 import json
@@ -52,6 +66,7 @@ class Gcloud(object):
         s = "Gcloud:" + self.bin
         return s
 
+    # add_to_path ensures that kubectl is on the provider environ
     def add_to_path(self, env):
         d = os.path.dirname(self.bin)
         env["PATH"] = d + ":" + env["PATH"]
@@ -88,6 +103,10 @@ class Gcloud(object):
     def list_gke_clusters(self):
         args = ["container", "clusters", "list"]
         return self.exec_and_parse_json(args)
+
+    def get_gke_cluster_creds(self, name, location, project):
+        args = ["container", "clusters", "get-credentials", name, "--zone", location, "--project", project]
+        return self.exec(args)
 
     def exec(self, args):
         return downloads.exec(
