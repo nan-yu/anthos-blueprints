@@ -69,6 +69,9 @@ class UpdatedPackages:
     def filter_out_patch_packages(self):
         return {k: v for (k, v) in self.packages.items() if not v.is_patch}
 
+    def filter_patch_packages(self):
+        return {k: v for (k, v) in self.packages.items() if v.is_patch}
+
     # The updated file is part of the subdirectory of the main repo
     # It might be part of a blueprint package
     def add_kpt_package_from_path(self, p):

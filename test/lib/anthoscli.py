@@ -61,6 +61,10 @@ class AnthosCLI(object):
         stdout = self.exec(["apply", "-f", specdir])
         return stdout
 
+    def export(self, cluster):
+        stdout = self.exec(["export", "-c", cluster])
+        return stdout
+
     def vet(self, specdir):
         stdout = self.exec(["vet", "-f", specdir])
         return stdout
