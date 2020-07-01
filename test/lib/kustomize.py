@@ -33,8 +33,8 @@ def download_kustomize(version):
 
     url = "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/v{version}/kustomize_v{version}_linux_amd64.tar.gz".format(version=version)
 
-    tarfile = os.path.join(scratch_dir, "kustomize.tar.gz")
-    downloads.download_url(url, tarfile)  # TODO: hashing?
+    downloads.exec(["curl", "-LJO", url], cwd=scratch_dir)
+    tarfile = os.path.join(scratch_dir, "kustomize_v{version}_linux_amd64.tar.gz".format(version=version))
     expanded = downloads.expand_tar(tarfile)
 
     kustomize_path = os.path.join(bin_dir, "kustomize")
@@ -63,18 +63,18 @@ class Kustomize(object):
         env["PATH"] = d + ":" + env["PATH"]
 
     def create_with_namespace(self, namespace, dir):
-        stdout = self.exec(dir, ["create", "--autodetect", "--namespace", namespace])
+        stdout = self.exec(["create", "--autodetect", "--namespace", namespace], dir)
         return stdout
 
     def build(self, output, dir):
-        stdout = self.exec(dir, ["build", "-o", output])
+        stdout = self.exec(["build", "-o", output], dir)
         return stdout
 
     def version(self):
-        stdout = self.exec("", ["version"])
+        stdout = self.exec(["version"])
         return stdout
 
-    def exec(self, dir, args):
+    def exec(self, args, dir=None):
         return downloads.exec(
             [self.bin] + args, cwd=dir, env=self.env
         ).strip()

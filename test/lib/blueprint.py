@@ -109,9 +109,9 @@ class UpdatedPackages:
 #
 # """.lstrip().rstrip().split("\n")
 # blueprint = UpdatedPackages(
-#     "/usr/local/google/home/nanyu/projects/anthos-blueprints", updates)
-# print(len(blueprint.packages))
-# print(blueprint.packages)
+#     "/usr/local/google/home/nanyu/projects/anthos-blueprints", updates).packages
+# print(blueprint)
+# print(len(blueprint))
 
 # packages = blueprint.filter_out_patch_packages()
 #
