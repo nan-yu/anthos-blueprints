@@ -101,23 +101,23 @@ class UpdatedPackages:
                 self.add_kpt_package_from_dir(sub_package)
 
 
-updates = """
-anthos-service-mesh-packages-release-1.5-asm
-
-""".lstrip().rstrip().split("\n")
-blueprint = UpdatedPackages(
-    "/usr/local/google/home/nanyu/projects/anthos-blueprints", updates)
+# updates = """
+# anthos-service-mesh-packages-release-1.5-asm
+#
+# """.lstrip().rstrip().split("\n")
+# blueprint = UpdatedPackages(
+#     "/usr/local/google/home/nanyu/projects/anthos-blueprints", updates)
 # print(len(blueprint.packages))
 # print(blueprint.packages)
 
-packages = blueprint.filter_out_patch_packages()
-
-for package_path in packages:
-    cluster_name = "btc"
-    print("package_path: " + package_path)
-    package_full_path = "git/%s" % (package_path)
-    print("package_full_path = " + package_full_path)
-    print("setters: " + str(packages[package_path].setters))
-
-print(
-    dict(filter(lambda item: not item[1].is_patch, blueprint.packages.items())))
+# packages = blueprint.filter_out_patch_packages()
+#
+# for package_path in packages:
+#     cluster_name = "btc"
+#     print("package_path: " + package_path)
+#     package_full_path = "git/%s" % (package_path)
+#     print("package_full_path = " + package_full_path)
+#     print("setters: " + str(packages[package_path].setters))
+#
+# print(
+#     dict(filter(lambda item: not item[1].is_patch, blueprint.packages.items())))
